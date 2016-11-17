@@ -2,6 +2,8 @@
 
 Authors: Gorkem Yakin, Nozomu Katō, Daniel Ehrenberg
 
+Stage: Not yet proposed to TC39
+
 ## Introduction
 
 Lookarounds are zero-width assertions that match a string without consuming anything. ECMAScript has lookahead assertions that does this in forward direction, but the language is missing a way to do this backward which the lookbehind assertions provide. With lookbehind assertions, one can make sure that a pattern is or isn't preceded by another, e.g. matching a dollar amount without capturing the dollar sign.
@@ -35,3 +37,7 @@ Within a lookbehind, capture groups are numbered backwards. In the example `/(?<
 ### Referring to capture groups
 
 Within a backreference, it is only possible to refer to captured groups that have already been evaluated. That is, the group has to be to the right of the backreference. For example, `/(?<=(.)\1)/` would not be a very useful RegExp, as `\1` cannot be resolved and would match against the empty string. Instead, to look for two copies of the same letter preceding the contents, one would write `/(?<=\1(.))/`.
+
+## Draft specification
+
+[specification diff](https://github.com/claudepache/ecma262/commit/b37e618f858fe75d241dd677e8258d908b3bc182) by Claude Pache.
