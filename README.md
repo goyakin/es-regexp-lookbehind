@@ -38,6 +38,10 @@ Within a lookbehind, capture groups are numbered backwards. In the example `/(?<
 
 Within a backreference, it is only possible to refer to captured groups that have already been evaluated. That is, the group has to be to the right of the backreference. For example, `/(?<=(.)\1)/` would not be a very useful RegExp, as `\1` cannot be resolved and would match against the empty string. Instead, to look for two copies of the same letter preceding the contents, one would write `/(?<=\1(.))/`.
 
+### Negative assertions
+
+Analogous to the negative lookahead assertion `/(?!.)/` long present in ECMAScript RegExps, this proposal includes a negative lookbehind assertion `/(?<!.)/`.
+
 ## Draft specification
 
 [specification diff](https://github.com/claudepache/ecma262/commit/b37e618f858fe75d241dd677e8258d908b3bc182) by Claude Pache.
