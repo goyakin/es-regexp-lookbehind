@@ -2,7 +2,7 @@
 
 Authors: Gorkem Yakin, Nozomu Katō, Daniel Ehrenberg
 
-Stage: Not yet proposed to TC39
+Stage 2
 
 ## Introduction
 
