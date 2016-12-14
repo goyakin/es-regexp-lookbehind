@@ -1,0 +1,135 @@
+<emu-grammar>
+  Pattern[U] ::
+    Disjunction[?U]
+
+  Disjunction[U] ::
+    Alternative[?U]
+    Alternative[?U] `|` Disjunction[?U]
+
+  Alternative[U] ::
+    [empty]
+    Alternative[?U] Term[?U]
+
+  Term[U] ::
+    Assertion[?U]
+    Atom[?U]
+    Atom[?U] Quantifier
+
+  Assertion[U] ::
+    `^`
+    `$`
+    `\` `b`
+    `\` `B`
+    `(` `?` `=` Disjunction[?U] `)`
+    `(` `?` `!` Disjunction[?U] `)`
+    <ins class="block">`(` `?` `&lt;=` Disjunction[?U] `)`</ins>
+    <ins class="block">`(` `?` `&lt;!` Disjunction[?U] `)`</ins>
+
+  Quantifier ::
+    QuantifierPrefix
+    QuantifierPrefix `?`
+
+  QuantifierPrefix ::
+    `*`
+    `+`
+    `?`
+    `{` DecimalDigits `}`
+    `{` DecimalDigits `,` `}`
+    `{` DecimalDigits `,` DecimalDigits `}`
+
+  Atom[U] ::
+    PatternCharacter
+    `.`
+    `\` AtomEscape[?U]
+    CharacterClass[?U]
+    `(` Disjunction[?U] `)`
+    `(` `?` `:` Disjunction[?U] `)`
+
+  SyntaxCharacter :: one of
+    `^` `$` `\` `.` `*` `+` `?` `(` `)` `[` `]` `{` `}` `|`
+
+  PatternCharacter ::
+    SourceCharacter but not SyntaxCharacter
+
+  AtomEscape[U] ::
+    DecimalEscape
+    CharacterClassEscape
+    CharacterEscape[?U]
+
+  CharacterEscape[U] ::
+    ControlEscape
+    `c` ControlLetter
+    `0` [lookahead &lt;! DecimalDigit]
+    HexEscapeSequence
+    RegExpUnicodeEscapeSequence[?U]
+    IdentityEscape[?U]
+
+  ControlEscape :: one of
+    `f` `n` `r` `t` `v`
+
+  ControlLetter :: one of
+    `a` `b` `c` `d` `e` `f` `g` `h` `i` `j` `k` `l` `m` `n` `o` `p` `q` `r` `s` `t` `u` `v` `w` `x` `y` `z`
+    `A` `B` `C` `D` `E` `F` `G` `H` `I` `J` `K` `L` `M` `N` `O` `P` `Q` `R` `S` `T` `U` `V` `W` `X` `Y` `Z`
+
+  RegExpUnicodeEscapeSequence[U] ::
+    [+U] `u` LeadSurrogate `\u` TrailSurrogate
+    [+U] `u` LeadSurrogate
+    [+U] `u` TrailSurrogate
+    [+U] `u` NonSurrogate
+    [~U] `u` Hex4Digits
+    [+U] `u{` HexDigits `}`
+</emu-grammar>
+<p>Each `\\u` |TrailSurrogate| for which the choice of associated `u` |LeadSurrogate| is ambiguous shall be associated with the nearest possible `u` |LeadSurrogate| that would otherwise have no corresponding `\\u` |TrailSurrogate|.</p>
+<emu-grammar>
+  LeadSurrogate ::
+    Hex4Digits [> but only if the SV of |Hex4Digits| is in the inclusive range 0xD800 to 0xDBFF]
+
+  TrailSurrogate ::
+    Hex4Digits [> but only if the SV of |Hex4Digits| is in the inclusive range 0xDC00 to 0xDFFF]
+
+  NonSurrogate ::
+    Hex4Digits [> but only if the SV of |Hex4Digits| is not in the inclusive range 0xD800 to 0xDFFF]
+
+  IdentityEscape[U] ::
+    [+U] SyntaxCharacter
+    [+U] `/`
+    [~U] SourceCharacter but not UnicodeIDContinue
+
+  DecimalEscape ::
+    NonZeroDigit DecimalDigits? [lookahead &lt;! DecimalDigit]
+
+  CharacterClassEscape :: one of
+    `d` `D` `s` `S` `w` `W`
+
+  CharacterClass[U] ::
+    `[` [lookahead &lt;! {`^`}] ClassRanges[?U] `]`
+    `[` `^` ClassRanges[?U] `]`
+
+  ClassRanges[U] ::
+    [empty]
+    NonemptyClassRanges[?U]
+
+  NonemptyClassRanges[U] ::
+    ClassAtom[?U]
+    ClassAtom[?U] NonemptyClassRangesNoDash[?U]
+    ClassAtom[?U] `-` ClassAtom[?U] ClassRanges[?U]
+
+  NonemptyClassRangesNoDash[U] ::
+    ClassAtom[?U]
+    ClassAtomNoDash[?U] NonemptyClassRangesNoDash[?U]
+    ClassAtomNoDash[?U] `-` ClassAtom[?U] ClassRanges[?U]
+
+  ClassAtom[U] ::
+    `-`
+    ClassAtomNoDash[?U]
+
+  ClassAtomNoDash[U] ::
+    SourceCharacter but not one of `\` or `]` or `-`
+    `\` ClassEscape[?U]
+
+  ClassEscape[U] ::
+    `b`
+    [+U] `-`
+    CharacterClassEscape
+    CharacterEscape[?U]
+</emu-grammar>
