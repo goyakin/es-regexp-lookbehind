@@ -44,4 +44,4 @@ Analogous to the negative lookahead assertion `/(?!.)/` long present in ECMAScri
 
 ## Draft specification
 
-[specification diff](https://github.com/claudepache/ecma262/commit/b37e618f858fe75d241dd677e8258d908b3bc182) by Claude Pache.
+[specification fragment](https://tc39.github.io/proposal-regexp-lookbehind/) by Thomas Wood and Claude Pache.
