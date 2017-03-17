@@ -32,7 +32,7 @@ Firstly, capture groups within a lookbehind assertion would have different value
 
 ### Numbering capture groups
 
-Within a lookbehind, capture groups are numbered backwards. In the example `/(?<=(\d+)(\d+))$/` matched against the string `'1053'`, `match[1]` would be `"053"` and `match[2]` would be `"1"`.
+Within a lookbehind, capture groups are numbered left to right. In the example `/(?<=(\d+)(\d+))$/` matched against the string `'1053'`, `match[1]` would be `"1"` and `match[2]` would be `"053"`.
 
 ### Referring to capture groups
 
