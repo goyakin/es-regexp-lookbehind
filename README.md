@@ -2,7 +2,7 @@
 
 Authors: Gorkem Yakin, Nozomu Katō, Daniel Ehrenberg
 
-Stage 2
+Stage 3
 
 ## Introduction
 
